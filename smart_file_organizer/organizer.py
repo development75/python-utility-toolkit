@@ -1,7 +1,7 @@
 from pathlib import Path
 import shutil
 
-from smart_file_organizer.file_categories import FILE_CATEGORIES
+from file_categories import FILE_CATEGORIES
 
 
 def get_category(file_path: Path) -> str:
@@ -30,45 +30,69 @@ def get_unique_path(destination: Path) -> Path:
             return new_destination
         count += 1
 
-def organize_files(source_directory: str) -> dict:
-    """Organize files into folders based on their extensions."""
-    source = Path(source_directory).expenduser().resolve()
+def organize_files(source_directory: str, dry_run: bool = False) -> dict:
+    """Organize files by extension, optionally previewing changes."""
 
-    if not source.exist():
-        raise FileNotFoundError( f"Directory does not exist: {source}" )
+    source = Path(source_directory).expanduser().resolve()
+
+    if not source.exists():
+        raise FileNotFoundError(
+            f"Directory does not exist: {source}"
+        )
+
     if not source.is_dir():
-        raise NotADirectoryError( f"Not a directory: {source}" )
+        raise NotADirectoryError(
+            f"Not a directory: {source}"
+        )
 
     summary = {
+        "detected": 0,
         "moved": 0,
         "skipped": 0,
         "errors": 0
     }
+
     for file_path in source.iterdir():
-        # Process files only, not directories.
+
         if not file_path.is_file():
             continue
-        # Skip symbolic links for safety.
+
         if file_path.is_symlink():
             summary["skipped"] += 1
             continue
+
+        summary["detected"] += 1
+
         try:
             category = get_category(file_path)
+
             destination_directory = source / category
-            destination_directory.mkdir(
-                parents = True,
-                exist_ok = True
-            )
+
             destination = destination_directory / file_path.name
+
             destination = get_unique_path(destination)
+
+            if dry_run:
+                print(
+                    f"{file_path.name} -> "
+                    f"{category}/{destination.name}"
+                )
+                summary["skipped"] += 1
+                continue
+
+            destination_directory.mkdir(
+                parents=True,
+                exist_ok=True
+            )
 
             shutil.move(
                 str(file_path),
                 str(destination)
             )
+
             print(
-                f"Moved: {file_path.name} -> {category}/"
-                f"{destination.name}"
+                f"Moved: {file_path.name} -> "
+                f"{category}/{destination.name}"
             )
 
             summary["moved"] += 1
@@ -77,4 +101,5 @@ def organize_files(source_directory: str) -> dict:
             print(f"Error processing {file_path.name}: {error}")
             summary["errors"] += 1
 
-        return summary
+    return summary
+
