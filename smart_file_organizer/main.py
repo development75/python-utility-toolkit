@@ -7,18 +7,15 @@ def main():
     parser = argparse.ArgumentParser(
         description="Smart File Organizer"
     )
-
     parser.add_argument(
         "directory",
         help="Directory containing files to organize"
     )
-
     parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Preview file movements without moving files"
     )
-
     args = parser.parse_args()
 
     try:
@@ -48,7 +45,6 @@ def main():
 
     except (FileNotFoundError, NotADirectoryError) as error:
         print(f"Error: {error}")
-
 
 if __name__ == "__main__":
     main()

@@ -39,39 +39,29 @@ def organize_files(source_directory: str, dry_run: bool = False) -> dict:
         raise FileNotFoundError(
             f"Directory does not exist: {source}"
         )
-
     if not source.is_dir():
         raise NotADirectoryError(
             f"Not a directory: {source}"
         )
-
     summary = {
         "detected": 0,
         "moved": 0,
         "skipped": 0,
         "errors": 0
     }
-
     for file_path in source.iterdir():
-
         if not file_path.is_file():
             continue
-
         if file_path.is_symlink():
             summary["skipped"] += 1
             continue
-
         summary["detected"] += 1
 
         try:
             category = get_category(file_path)
-
             destination_directory = source / category
-
             destination = destination_directory / file_path.name
-
             destination = get_unique_path(destination)
-
             if dry_run:
                 print(
                     f"{file_path.name} -> "
@@ -84,17 +74,14 @@ def organize_files(source_directory: str, dry_run: bool = False) -> dict:
                 parents=True,
                 exist_ok=True
             )
-
             shutil.move(
                 str(file_path),
                 str(destination)
             )
-
             print(
                 f"Moved: {file_path.name} -> "
                 f"{category}/{destination.name}"
             )
-
             summary["moved"] += 1
 
         except OSError as error:
