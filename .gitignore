@@ -72,6 +72,10 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+log_file_analyzer\README.md
+file_converter\README.md
+csv_data_cleaner\README.md
+
 # PyBuilder
 .pybuilder/
 target/
