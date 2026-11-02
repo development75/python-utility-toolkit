@@ -1,0 +1,20 @@
+[
+    {
+        "Name": "Neha",
+        "Email": "neha@example.com",
+        "Age": 25,
+        "City": "Kolkata"
+    },
+    {
+        "Name": "Rahul",
+        "Email": "rahul@example.com",
+        "Age": 28,
+        "City": "Howrah"
+    },
+    {
+        "Name": "Priya",
+        "Email": "priya@example.com",
+        "Age": 26,
+        "City": "Delhi"
+    }
+]
