@@ -72,9 +72,12 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-log_file_analyzer/README.md/
-file_converter/README.md/
-csv_data_cleaner/README.md/
+log_file_analyzer\sample_files
+file_converter\sample_files
+file_converter\converted_files
+duplicate_finder\sample_files"
+csv_data_cleaner\sample_files
+smart_file_organizer\sample_files"
 
 # PyBuilder
 .pybuilder/
